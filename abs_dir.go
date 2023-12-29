@@ -3,7 +3,7 @@ package pathology
 import (
 	"errors"
 	"fmt"
-	"golang.org/x/exp/maps"
+	"github.com/boggydigital/wits"
 	"os"
 	"slices"
 )
@@ -16,12 +16,31 @@ var (
 	absDirsKnown    []AbsDir
 )
 
-func SetAbsDirs(kv map[AbsDir]string) error {
+func SetAbsDirs(userDirectoriesFilename string, absDirs ...AbsDir) error {
 
-	absDirsKnown = maps.Keys(kv)
-	defaultDirs := GetDefaultDirs(absDirsKnown...)
+	absDirsKnown = absDirs
+	defaultDirs := getDefaultDirs(absDirs...)
 
-	for adk, adp := range kv {
+	var userDirs map[string]string
+
+	if userDirectoriesFilename != "" {
+		if _, err := os.Stat(userDirectoriesFilename); err == nil {
+			udFile, err := os.Open(userDirectoriesFilename)
+			if err != nil {
+				return err
+			}
+
+			userDirs, err = wits.ReadKeyValue(udFile)
+			if err != nil {
+				return err
+			}
+		} else {
+			return err
+		}
+	}
+
+	for _, adk := range absDirs {
+		adp := userDirs[string(adk)]
 		if adp == "" {
 			adp = defaultDirs[adk]
 		}

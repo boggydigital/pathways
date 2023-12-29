@@ -10,7 +10,7 @@ func SetDefaultRootDir(drd string) {
 	defaultRootDirSet = true
 }
 
-func GetDefaultDirs(dirs ...AbsDir) map[AbsDir]string {
+func getDefaultDirs(dirs ...AbsDir) map[AbsDir]string {
 	defaultDirs := make(map[AbsDir]string, len(dirs))
 
 	for _, d := range dirs {
