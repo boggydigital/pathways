@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"golang.org/x/exp/maps"
 	"os"
+	"slices"
 )
 
 type AbsDir string
@@ -12,20 +13,22 @@ type AbsDir string
 var (
 	absDirsPaths    = map[AbsDir]string{}
 	absDirsPathsSet = false
+	absDirsKnown    []AbsDir
 )
 
 func SetAbsDirs(kv map[AbsDir]string) error {
 
-	defaultDirs := GetDefaultDirs(maps.Keys(kv)...)
+	absDirsKnown = maps.Keys(kv)
+	defaultDirs := GetDefaultDirs(absDirsKnown...)
 
 	for adk, adp := range kv {
-		if adp != defaultDirs[string(adk)] {
-			// make sure directory exists and is accessible to current process
-			if _, err := os.Stat(adp); err != nil {
-				return err
-			}
+		if adp == "" {
+			adp = defaultDirs[adk]
 		}
 		absDirsPaths[adk] = adp
+		if _, err := os.Stat(adp); err != nil {
+			return err
+		}
 	}
 
 	absDirsPathsSet = true
@@ -39,6 +42,9 @@ func GetAbsDir(ad AbsDir) (string, error) {
 	}
 	if !absDirsPathsSet {
 		return "", errors.New("pathology abs dirs paths not set")
+	}
+	if !slices.Contains(absDirsKnown, ad) {
+		return "", errors.New("unknown abs dir " + string(ad))
 	}
 
 	if adp, ok := absDirsPaths[ad]; ok && adp != "" {
