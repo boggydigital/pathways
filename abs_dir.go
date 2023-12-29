@@ -23,18 +23,14 @@ func SetAbsDirs(userDirectoriesFilename string, absDirs ...AbsDir) error {
 
 	userDirs := make(map[string]string)
 
-	if userDirectoriesFilename != "" {
-		if _, err := os.Stat(userDirectoriesFilename); err == nil {
-			udFile, err := os.Open(userDirectoriesFilename)
-			if err != nil {
-				return err
-			}
+	if _, err := os.Stat(userDirectoriesFilename); err == nil {
+		udFile, err := os.Open(userDirectoriesFilename)
+		if err != nil {
+			return err
+		}
 
-			userDirs, err = wits.ReadKeyValue(udFile)
-			if err != nil {
-				return err
-			}
-		} else {
+		userDirs, err = wits.ReadKeyValue(udFile)
+		if err != nil {
 			return err
 		}
 	}
