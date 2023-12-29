@@ -1,6 +1,7 @@
 package pathology
 
 import (
+	"errors"
 	"fmt"
 	"golang.org/x/exp/maps"
 	"os"
@@ -8,7 +9,10 @@ import (
 
 type AbsDir string
 
-var absDirsPaths = map[AbsDir]string{}
+var (
+	absDirsPaths    = map[AbsDir]string{}
+	absDirsPathsSet = false
+)
 
 func SetAbsDirs(kv map[AbsDir]string) error {
 
@@ -23,10 +27,20 @@ func SetAbsDirs(kv map[AbsDir]string) error {
 		}
 		absDirsPaths[adk] = adp
 	}
+
+	absDirsPathsSet = true
 	return nil
 }
 
 func GetAbsDir(ad AbsDir) (string, error) {
+
+	if !defaultRootDirSet {
+		return "", errors.New("pathology default root dir not set")
+	}
+	if !absDirsPathsSet {
+		return "", errors.New("pathology abs dirs paths not set")
+	}
+
 	if adp, ok := absDirsPaths[ad]; ok && adp != "" {
 		return adp, nil
 	}

@@ -1,9 +1,13 @@
 package pathology
 
-var defaultRootDirectory = "/var/lib/pathology"
+var (
+	defaultRootDirectory = "/var/lib/pathology"
+	defaultRootDirSet    = false
+)
 
 func SetDefaultRootDir(drd string) {
 	defaultRootDirectory = drd
+	defaultRootDirSet = true
 }
 
 func GetDefaultDirs(dirs ...AbsDir) map[string]string {
