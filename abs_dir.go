@@ -3,8 +3,6 @@ package pathology
 import (
 	"errors"
 	"fmt"
-	"github.com/boggydigital/wits"
-	"os"
 	"slices"
 )
 
@@ -23,23 +21,10 @@ func SetAbsDirs(absDirs ...AbsDir) error {
 	return nil
 }
 
-func SetUserDirsOverrides(absOverridesPath string) error {
-	if _, err := os.Stat(absOverridesPath); err == nil {
-		udFile, err := os.Open(absOverridesPath)
-		if err != nil {
-			return err
-		}
-
-		userDirs, err := wits.ReadKeyValue(udFile)
-		if err != nil {
-			return err
-		}
-
-		for absDir, absPath := range userDirs {
-			absDirsPaths[AbsDir(absDir)] = absPath
-		}
+func SetUserDirsOverrides(userDirs map[string]string) {
+	for absDir, absPath := range userDirs {
+		absDirsPaths[AbsDir(absDir)] = absPath
 	}
-	return nil
 }
 
 func GetAbsDir(ad AbsDir) (string, error) {
