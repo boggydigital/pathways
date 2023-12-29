@@ -21,7 +21,7 @@ func SetAbsDirs(userDirectoriesFilename string, absDirs ...AbsDir) error {
 	absDirsKnown = absDirs
 	defaultDirs := getDefaultDirs(absDirs...)
 
-	var userDirs map[string]string
+	userDirs := make(map[string]string)
 
 	if userDirectoriesFilename != "" {
 		if _, err := os.Stat(userDirectoriesFilename); err == nil {
