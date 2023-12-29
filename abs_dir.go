@@ -16,37 +16,29 @@ var (
 	absDirsKnown    []AbsDir
 )
 
-func SetAbsDirs(userDirectoriesFilename string, absDirs ...AbsDir) error {
-
+func SetAbsDirs(absDirs ...AbsDir) error {
 	absDirsKnown = absDirs
-	defaultDirs := getDefaultDirs(absDirs...)
-
-	userDirs := make(map[string]string)
-
-	if _, err := os.Stat(userDirectoriesFilename); err == nil {
-		udFile, err := os.Open(userDirectoriesFilename)
-		if err != nil {
-			return err
-		}
-
-		userDirs, err = wits.ReadKeyValue(udFile)
-		if err != nil {
-			return err
-		}
-	}
-
-	for _, adk := range absDirs {
-		adp := userDirs[string(adk)]
-		if adp == "" {
-			adp = defaultDirs[adk]
-		}
-		absDirsPaths[adk] = adp
-		if _, err := os.Stat(adp); err != nil {
-			return err
-		}
-	}
-
+	absDirsPaths = getDefaultDirs(absDirs...)
 	absDirsPathsSet = true
+	return nil
+}
+
+func SetUserDirsOverrides(absOverridesPath string) error {
+	if _, err := os.Stat(absOverridesPath); err == nil {
+		udFile, err := os.Open(absOverridesPath)
+		if err != nil {
+			return err
+		}
+
+		userDirs, err := wits.ReadKeyValue(udFile)
+		if err != nil {
+			return err
+		}
+
+		for absDir, absPath := range userDirs {
+			absDirsPaths[AbsDir(absDir)] = absPath
+		}
+	}
 	return nil
 }
 
