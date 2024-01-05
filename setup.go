@@ -5,7 +5,11 @@ import (
 	"os"
 )
 
-func Setup(optionalDirsOverrideFilename string, defaultRootDir string, absDirs ...AbsDir) error {
+func Setup(
+	optionalDirsOverrideFilename string,
+	defaultRootDir string,
+	relToAbsDirs map[RelDir]AbsDir,
+	absDirs ...AbsDir) error {
 	SetDefaultRootDir(defaultRootDir)
 	if err := SetAbsDirs(absDirs...); err != nil {
 		return err
@@ -21,5 +25,9 @@ func Setup(optionalDirsOverrideFilename string, defaultRootDir string, absDirs .
 		}
 		SetUserDirsOverrides(userDirs)
 	}
+	if relToAbsDirs != nil {
+		SetRelToAbsDir(relToAbsDirs)
+	}
+
 	return nil
 }
