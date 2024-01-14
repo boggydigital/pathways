@@ -1,4 +1,4 @@
-package pathology
+package pasu
 
 import (
 	"errors"
@@ -24,7 +24,7 @@ func SetRelToAbsDir(ra map[RelDir]AbsDir) {
 
 func GetAbsRelDir(rd RelDir) (string, error) {
 	if !relToAbsDirSet {
-		return "", errors.New("pathology rel to abs dir not set")
+		return "", errors.New("pasu rel to abs dir not set")
 	}
 	if !slices.Contains(relDirsKnown, rd) {
 		return "", errors.New("unknown rel dir " + string(rd))

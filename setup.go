@@ -1,4 +1,4 @@
-package pathology
+package pasu
 
 import (
 	"github.com/boggydigital/wits"

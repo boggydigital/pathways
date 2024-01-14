@@ -1,9 +1,9 @@
-package pathology
+package pasu
 
 import "path/filepath"
 
 var (
-	defaultRootDirectory = "/var/lib/pathology"
+	defaultRootDirectory = "/var/lib/pasu"
 	defaultRootDirSet    = false
 )
 

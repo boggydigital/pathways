@@ -1,4 +1,4 @@
-package pathology
+package pasu
 
 import (
 	"errors"
@@ -30,10 +30,10 @@ func SetUserDirsOverrides(userDirs map[string]string) {
 func GetAbsDir(ad AbsDir) (string, error) {
 
 	if !defaultRootDirSet {
-		return "", errors.New("pathology default root dir not set")
+		return "", errors.New("pasu default root dir not set")
 	}
 	if !absDirsPathsSet {
-		return "", errors.New("pathology abs dirs paths not set")
+		return "", errors.New("pasu abs dirs paths not set")
 	}
 	if !slices.Contains(absDirsKnown, ad) {
 		return "", errors.New("unknown abs dir " + string(ad))
