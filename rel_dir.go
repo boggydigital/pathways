@@ -42,3 +42,10 @@ func GetAbsRelDir(rd RelDir) (string, error) {
 		return "", fmt.Errorf("%s dir relativity not set", rd)
 	}
 }
+
+func GetRelDir(rd RelDir) (string, error) {
+	if !slices.Contains(relDirsKnown, rd) {
+		return "", errors.New("unknown rel dir " + string(rd))
+	}
+	return string(rd), nil
+}
