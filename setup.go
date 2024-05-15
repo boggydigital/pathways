@@ -29,5 +29,5 @@ func Setup(
 		SetRelToAbsDir(relToAbsDirs)
 	}
 
-	return nil
+	return confirmAbsDirs()
 }
