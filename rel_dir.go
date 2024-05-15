@@ -1,8 +1,6 @@
-package pasu
+package pathways
 
 import (
-	"errors"
-	"fmt"
 	"golang.org/x/exp/maps"
 	"path/filepath"
 	"slices"
@@ -24,10 +22,10 @@ func SetRelToAbsDir(ra map[RelDir]AbsDir) {
 
 func GetAbsRelDir(rd RelDir) (string, error) {
 	if !relToAbsDirSet {
-		return "", errors.New("pasu rel to abs dir not set")
+		return "", ErrRelToAbsDirNotSet
 	}
 	if !slices.Contains(relDirsKnown, rd) {
-		return "", errors.New("unknown rel dir " + string(rd))
+		return "", errUnknownRelDir(rd)
 	}
 
 	if ad, ok := relToAbsDir[rd]; ok {
@@ -39,13 +37,13 @@ func GetAbsRelDir(rd RelDir) (string, error) {
 
 		return filepath.Join(adp, string(rd)), nil
 	} else {
-		return "", fmt.Errorf("%s dir relativity not set", rd)
+		return "", errRelativityNotSet(rd)
 	}
 }
 
 func GetRelDir(rd RelDir) (string, error) {
 	if !slices.Contains(relDirsKnown, rd) {
-		return "", errors.New("unknown rel dir " + string(rd))
+		return "", errUnknownRelDir(rd)
 	}
 	return string(rd), nil
 }

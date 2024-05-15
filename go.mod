@@ -1,4 +1,4 @@
-module github.com/boggydigital/pasu
+module github.com/boggydigital/pathways
 
 go 1.21
 

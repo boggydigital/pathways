@@ -1,8 +1,6 @@
-package pasu
+package pathways
 
 import (
-	"errors"
-	"fmt"
 	"slices"
 )
 
@@ -30,17 +28,18 @@ func SetUserDirsOverrides(userDirs map[string]string) {
 func GetAbsDir(ad AbsDir) (string, error) {
 
 	if !defaultRootDirSet {
-		return "", errors.New("pasu default root dir not set")
+		return "", ErrDefaultRootDirNotSet
 	}
 	if !absDirsPathsSet {
-		return "", errors.New("pasu abs dirs paths not set")
+		return "", ErrAbsDirsPathsNotSet
 	}
 	if !slices.Contains(absDirsKnown, ad) {
-		return "", errors.New("unknown abs dir " + string(ad))
+		return "", errUnknownAbsDir(ad)
 	}
 
 	if adp, ok := absDirsPaths[ad]; ok && adp != "" {
 		return adp, nil
 	}
-	return "", fmt.Errorf("abs dir %s not set", ad)
+
+	return "", errAbsDirNotSet(ad)
 }

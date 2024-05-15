@@ -1,4 +1,4 @@
-package pasu
+package pathways
 
 import (
 	"github.com/boggydigital/wits"

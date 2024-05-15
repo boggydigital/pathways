@@ -1,9 +1,9 @@
-package pasu
+package pathways
 
 import "path/filepath"
 
 var (
-	defaultRootDirectory = "/var/lib/pasu"
+	defaultRootDirectory = "/var/lib/pathways"
 	defaultRootDirSet    = false
 )
 
