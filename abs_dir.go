@@ -1,7 +1,7 @@
 package pathways
 
 import (
-	"golang.org/x/exp/maps"
+	"maps"
 	"os"
 	"slices"
 )
@@ -47,7 +47,7 @@ func GetAbsDir(ad AbsDir) (string, error) {
 }
 
 func confirmAbsDirs() error {
-	for _, d := range maps.Values(absDirsPaths) {
+	for d := range maps.Values(absDirsPaths) {
 		if _, err := os.Stat(d); err != nil {
 			return err
 		}

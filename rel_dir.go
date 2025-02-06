@@ -1,7 +1,7 @@
 package pathways
 
 import (
-	"golang.org/x/exp/maps"
+	"maps"
 	"path/filepath"
 	"slices"
 )
@@ -15,7 +15,7 @@ var (
 )
 
 func SetRelToAbsDir(ra map[RelDir]AbsDir) {
-	relDirsKnown = maps.Keys(ra)
+	relDirsKnown = slices.Collect(maps.Keys(ra))
 	relToAbsDir = ra
 	relToAbsDirSet = true
 }
