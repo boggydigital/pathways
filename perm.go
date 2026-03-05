@@ -2,4 +2,4 @@ package pathways
 
 import "os"
 
-const PermUrwGrwOr os.FileMode = 0664
+const PermUrwGrwOr os.FileMode = 0644
