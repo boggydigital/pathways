@@ -20,16 +20,20 @@ var (
 	relAbsParents map[RelDir][]AbsDir
 )
 
-func Register(absolutePaths map[AbsDir]string, relativeNames map[RelDir]string, relativeAbsoluteParents map[RelDir][]AbsDir) error {
+func Register(absolutePaths map[AbsDir]string, relativeNames map[RelDir]string, relativeAbsoluteParents map[RelDir][]AbsDir, createDirs bool) error {
 
 	absPaths = absolutePaths
 	relNames = relativeNames
 	relAbsParents = relativeAbsoluteParents
 
-	for _, ap := range absolutePaths {
-		if _, err := os.Stat(ap); os.IsNotExist(err) {
-			if err = os.MkdirAll(ap, DefaultFileMode); err != nil {
-				return err
+	for _, absPath := range absolutePaths {
+		if _, err := os.Stat(absPath); os.IsNotExist(err) {
+			if createDirs {
+				if err = os.MkdirAll(absPath, DefaultFileMode); err != nil {
+					return err
+				}
+			} else {
+				return errors.New("camino abs path not present: " + absPath)
 			}
 		}
 	}
@@ -44,8 +48,12 @@ func Register(absolutePaths map[AbsDir]string, relativeNames map[RelDir]string, 
 					absRelPath := filepath.Join(absPath, relName)
 
 					if _, err := os.Stat(absRelPath); os.IsNotExist(err) {
-						if err = os.MkdirAll(absRelPath, DefaultFileMode); err != nil {
-							return err
+						if createDirs {
+							if err = os.MkdirAll(absRelPath, DefaultFileMode); err != nil {
+								return err
+							}
+						} else {
+							return errors.New("camino rel path not present: " + absRelPath)
 						}
 					}
 
